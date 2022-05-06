@@ -1,7 +1,6 @@
 import '../style.css';
+import Keyboard from './keyboard';
 
-const heading = document.createElement('h1');
-heading.textContent = 'It works fine';
-document.documentElement.append(heading);
+const keyboard = new Keyboard().createKeyboard();
 
-console.log('Hello');
+document.body.append(keyboard);

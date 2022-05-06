@@ -5,5 +5,46 @@
 }
 
 body {
-    background-color: cornflowerblue;
+    background-color: #111;
+}
+
+.keyboard {
+    width: 700px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    /* background-color: grey; */
+}
+
+.key {
+    color: #FFF;
+    height: 40px;
+    width: 40px;
+    background-color: inherit;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+}
+
+.key:hover {
+    background-color:#7e92a8;
+}
+
+.key.pressed {
+    background-color: #1782FF;
+}
+
+.key.length2 {
+    width: 60px;
+}
+
+.key.length3 {
+    width: 80px;
+}
+.key.length4 {
+    width: 270px;
 }
