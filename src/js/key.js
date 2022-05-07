@@ -10,6 +10,7 @@ export default class Key {
     key.textContent = this.value;
     key.classList.add('key');
     key.dataset.code = this.code;
+    key.dataset.initialValue = this.value;
     if (this.length > 1) {
       key.classList.add(`length${this.length}`);
     }
