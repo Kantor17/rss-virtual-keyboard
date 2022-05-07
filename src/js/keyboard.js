@@ -31,13 +31,29 @@ export default class Keyboard {
     event.preventDefault();
     const key = this.keys.find((element) => element.dataset.code === event.code);
     if (key) {
-      key.classList.add('pressed');
+      switch (key.dataset.code) {
+        case 'CapsLock':
+          key.classList.toggle('pressed');
+          this.keys.forEach((item) => {
+            const element = item;
+            if (element.dataset.code.includes('Key')) {
+              if (key.classList.contains('pressed')) {
+                element.textContent = element.textContent.toUpperCase();
+              } else {
+                element.textContent = element.textContent.toLowerCase();
+              }
+            }
+          });
+          break;
+        default:
+          key.classList.add('pressed');
+      }
     }
   }
 
   onKeyup(event) {
     const key = this.keys.find((element) => element.dataset.code === event.code);
-    if (key) {
+    if (key && key.dataset.code !== 'CapsLock') {
       key.classList.remove('pressed');
     }
   }
