@@ -1,14 +1,20 @@
 import Key from './key';
 
-const characters = [['`'], ['1'], ['3'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['0'], ['-'], ['='], ['Backspace', 3],
-  ['Tab', 2], ['q'], ['w'], ['e'], ['r'], ['t'], ['y'], ['u'], ['i'], ['o'], ['p'], ['['], [']'], ['\\'], ['Del'],
-  ['CapsLock', 3], ['a'], ['s'], ['d'], ['f'], ['g'], ['h'], ['j'], ['k'], ['l'], [';'], ['\''], ['Enter', 3],
-  ['Shift', 3], ['z'], ['x'], ['c'], ['v'], ['b'], ['n'], ['m'], [','], ['.'], ['/'], ['↑'], ['Shift', 3],
-  ['Ctrl', 3], ['Win'], ['Alt'], ['', 4], ['Alt'], ['←'], ['↓'], ['→'], ['Ctrl']];
+const characters = [['`', 'Backquote'], ['1', 'Digit1'], ['2', 'Digit2'], ['3', 'Digit3'], ['4', 'Digit4'], ['5', 'Digit5'],
+  ['6', 'Digit6'], ['7', 'Digit7'], ['8', 'Digit8'], ['9', 'Digit9'], ['0', 'Digit0'], ['-', 'Minus'], ['=', 'Equal'],
+  ['Backspace', 'Backspace', 3],
+  ['Tab', 'Tab', 2], ['q', 'KeyQ'], ['w', 'KeyW'], ['e', 'KeyE'], ['r', 'KeyR'], ['t', 'KeyT'], ['y', 'KeyY'], ['u', 'KeyU'],
+  ['i', 'KeyI'], ['o', 'KeyO'], ['p', 'KeyP'], ['[', 'BracketLeft'], [']', 'BracketRight'], ['\\', 'Backslash'], ['Del', 'Delete'],
+  ['CapsLock', 'CapsLock', 3], ['a', 'KeyA'], ['s', 'KeyS'], ['d', 'KeyD'], ['f', 'KeyF'], ['g', 'KeyG'], ['h', 'KeyH'], ['j', 'KeyJ'],
+  ['k', 'KeyK'], ['l', 'KeyL'], [';', 'Semicolon'], ['\'', 'Quote'], ['Enter', 'Enter', 3],
+  ['Shift', 'ShiftLeft', 3], ['z', 'KeyZ'], ['x', 'KeyX'], ['c', 'KeyC'], ['v', 'KeyV'], ['b', 'KeyB'], ['n', 'KeyN'], ['m', 'KeyM'],
+  [',', 'Comma'], ['.', 'Period'], ['/', 'Slash'], ['↑', 'ArrowUp'], ['Shift', 'ShiftRight', 3],
+  ['Ctrl', 'ControlLeft', 3], ['Win', 'MetaLeft'], ['Alt', 'AltLeft'], ['', 'Space', 4], ['Alt', 'AltRight'], ['←', 'ArrowLeft'],
+  ['↓', 'ArrowDown'], ['→', 'ArrowRight'], ['Ctrl', 'ControlRight']];
 
 export default class Keyboard {
   constructor() {
-    this.keys = characters.map((char) => new Key(char[0], char[1]).createKey());
+    this.keys = characters.map((char) => new Key(...char).createKey());
   }
 
   createKeyboard() {
@@ -19,5 +25,26 @@ export default class Keyboard {
     });
 
     return keyboard;
+  }
+
+  onKeydown(event) {
+    event.preventDefault();
+    const key = this.keys.find((element) => element.dataset.code === event.code);
+    if (key) {
+      key.classList.add('pressed');
+    }
+  }
+
+  onKeyup(event) {
+    const key = this.keys.find((element) => element.dataset.code === event.code);
+    if (key) {
+      key.classList.remove('pressed');
+    }
+  }
+
+  onFocusLost() {
+    this.keys.forEach((key) => {
+      key.classList.remove('pressed');
+    });
   }
 }

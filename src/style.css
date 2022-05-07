@@ -28,6 +28,9 @@ body {
     background-color: inherit;
     border: 1.5px solid rgba(255, 255, 255, 0.25);
     border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.5s;
 }
 
 .key:hover {
@@ -35,6 +38,7 @@ body {
 }
 
 .key.pressed {
+    border-radius: 15px;
     background-color: #1782FF;
 }
 
