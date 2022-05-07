@@ -26,9 +26,14 @@ export default class Keyboard {
     return keyboard;
   }
 
-  onKeydown(event) {
+  onPress(event) {
     event.preventDefault();
-    const key = this.keys.find((element) => element.dataset.code === event.code);
+    let key = null;
+    if (event.type === 'mousedown') {
+      key = event.target;
+    } else {
+      key = this.keys.find((element) => element.dataset.code === event.code);
+    }
     if (key) {
       switch (key.dataset.code) {
         case 'CapsLock':
@@ -45,8 +50,13 @@ export default class Keyboard {
     }
   }
 
-  onKeyup(event) {
-    const key = this.keys.find((element) => element.dataset.code === event.code);
+  onUnpress(event) {
+    let key = null;
+    if (event.type === 'mouseup') {
+      key = event.target;
+    } else {
+      key = this.keys.find((element) => element.dataset.code === event.code);
+    }
     if (key && key.dataset.code !== 'CapsLock') {
       key.classList.remove('pressed');
       if (key.dataset.code === 'ShiftLeft' || key.dataset.code === 'ShiftRight') {

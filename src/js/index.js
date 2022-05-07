@@ -7,22 +7,17 @@ const keyboardE = keyboard.createKeyboard();
 document.body.append(keyboardE);
 
 document.body.addEventListener('keydown', (event) => {
-  keyboard.onKeydown(event);
+  keyboard.onPress(event);
 });
 document.body.addEventListener('keyup', (event) => {
-  keyboard.onKeyup(event);
+  keyboard.onUnpress(event);
 });
 
 keyboardE.addEventListener('mousedown', (event) => {
-  event.preventDefault();
-  if (event.target.classList.contains('key')) {
-    event.target.classList.add('pressed');
-  }
+  keyboard.onPress(event);
 });
 keyboardE.addEventListener('mouseup', (event) => {
-  if (event.target.classList.contains('key')) {
-    event.target.classList.remove('pressed');
-  }
+  keyboard.onUnpress(event);
 });
 
 window.addEventListener('blur', () => {
