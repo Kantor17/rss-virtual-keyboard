@@ -1,10 +1,14 @@
 import '../style.css';
 import Keyboard from './keyboard';
 
-const keyboard = new Keyboard();
-
+const textArea = document.createElement('textarea');
+textArea.rows = 12;
+textArea.cols = 50;
+textArea.classList.add('textArea');
+textArea.autofocus = true;
+const keyboard = new Keyboard(textArea);
 const keyboardE = keyboard.createKeyboard();
-document.body.append(keyboardE);
+document.body.append(textArea, keyboardE);
 
 document.body.addEventListener('keydown', (event) => {
   keyboard.onPress(event);
