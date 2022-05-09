@@ -104,7 +104,7 @@ export default class Keyboard {
     key.classList.toggle('pressed');
     this.keys.forEach((item) => {
       const element = item;
-      if (element.dataset.code.includes('Key')) {
+      if (element.dataset.code.includes('Key') || 'хїжєбю'.includes(element.textContent.toLowerCase())) {
         if (element.textContent === element.textContent.toLowerCase()) {
           element.textContent = element.textContent.toUpperCase();
         } else {
@@ -123,7 +123,7 @@ export default class Keyboard {
     key.classList.add('pressed');
     this.keys.forEach((item) => {
       const element = item;
-      if (element.dataset.code.includes('Key')) {
+      if (element.dataset.code.includes('Key') || 'хїжєбю'.includes(element.textContent.toLowerCase())) {
         if (element.textContent === element.textContent.toLowerCase()) {
           element.textContent = element.textContent.toUpperCase();
         } else {
@@ -144,7 +144,7 @@ export default class Keyboard {
     }
     this.keys.forEach((item) => {
       const element = item;
-      if (element.dataset.code.includes('Key')) {
+      if (element.dataset.code.includes('Key') || 'хїжєбю'.includes(element.textContent.toLowerCase())) {
         if (element.textContent === element.textContent.toLowerCase()) {
           element.textContent = element.textContent.toUpperCase();
         } else {
