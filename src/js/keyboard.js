@@ -73,7 +73,7 @@ export default class Keyboard {
 
   onUnpress(event) {
     let key = null;
-    if (event.type === 'mouseup') {
+    if (event.type === 'mouseup' || event.type === 'mouseout') {
       key = event.target;
     } else {
       key = this.keys.find((element) => element.dataset.code === event.code);

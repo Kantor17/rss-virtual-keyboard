@@ -36,6 +36,9 @@ keyboardE.addEventListener('mousedown', (event) => {
 keyboardE.addEventListener('mouseup', (event) => {
   keyboard.onUnpress(event);
 });
+keyboardE.addEventListener('mouseout', (event) => {
+  keyboard.onUnpress(event);
+});
 
 window.addEventListener('blur', () => {
   keyboard.onFocusLost();
