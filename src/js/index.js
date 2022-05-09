@@ -33,10 +33,7 @@ document.body.addEventListener('keyup', (event) => {
 keyboardE.addEventListener('mousedown', (event) => {
   keyboard.onPress(event);
 });
-keyboardE.addEventListener('mouseup', (event) => {
-  keyboard.onUnpress(event);
-});
-keyboardE.addEventListener('mouseout', (event) => {
+document.body.addEventListener('mouseup', (event) => {
   keyboard.onUnpress(event);
 });
 

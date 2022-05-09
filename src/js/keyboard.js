@@ -57,6 +57,7 @@ export default class Keyboard {
     let key = null;
     if (event.type === 'mousedown') {
       key = event.target;
+      this.current = key;
     } else {
       key = this.keys.find((element) => element.dataset.code === event.code);
     }
@@ -73,8 +74,8 @@ export default class Keyboard {
 
   onUnpress(event) {
     let key = null;
-    if (event.type === 'mouseup' || event.type === 'mouseout') {
-      key = event.target;
+    if (event.type === 'mouseup') {
+      key = this.current;
     } else {
       key = this.keys.find((element) => element.dataset.code === event.code);
     }
