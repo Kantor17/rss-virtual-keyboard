@@ -92,7 +92,9 @@ export default class Keyboard {
 
   onFocusLost() {
     this.keys.forEach((key) => {
-      key.classList.remove('pressed');
+      if (!this.functionCodes.includes(key.dataset.code)) {
+        key.classList.remove('pressed');
+      }
     });
   }
 
