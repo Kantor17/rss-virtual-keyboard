@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color:powderblue;
+    background-color: #111;
+}
+
+.keyboard {
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 70px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.key {
+    color: #FFF;
+    height: 40px;
+    width: 40px;
+    background-color: inherit;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.5s;
+}
+
+.key:hover {
+    background-color:#7e92a8;
+}
+
+.key.pressed {
+    border-radius: 15px;
+    background-color: #1782FF;
+}
+
+.key.length2 {
+    width: 60px;
+}
+
+.key.length3 {
+    width: 80px;
+}
+.key.length4 {
+    width: 270px;
+}
+
+.textArea {
+    padding: 5px;
+    margin-top: 100px;
+    display: block;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.instruction {
+    text-align: center;
+}
