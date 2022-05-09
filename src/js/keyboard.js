@@ -1,8 +1,8 @@
 import Key from './key';
 
 export default class Keyboard {
-  constructor(area) {
-    this.characters = [['`', 'Backquote'], ['1', 'Digit1'], ['2', 'Digit2'], ['3', 'Digit3'], ['4', 'Digit4'], ['5', 'Digit5'],
+  constructor(area, language) {
+    this.english = [['`', 'Backquote'], ['1', 'Digit1'], ['2', 'Digit2'], ['3', 'Digit3'], ['4', 'Digit4'], ['5', 'Digit5'],
       ['6', 'Digit6'], ['7', 'Digit7'], ['8', 'Digit8'], ['9', 'Digit9'], ['0', 'Digit0'], ['-', 'Minus'], ['=', 'Equal'],
       ['Backspace', 'Backspace', 3],
       ['Tab', 'Tab', 2], ['q', 'KeyQ'], ['w', 'KeyW'], ['e', 'KeyE'], ['r', 'KeyR'], ['t', 'KeyT'], ['y', 'KeyY'], ['u', 'KeyU'],
@@ -13,19 +13,39 @@ export default class Keyboard {
       [',', 'Comma'], ['.', 'Period'], ['/', 'Slash'], ['↑', 'ArrowUp'], ['Shift', 'ShiftRight', 3],
       ['Ctrl', 'ControlLeft', 3], ['Win', 'MetaLeft'], ['Alt', 'AltLeft'], [' ', 'Space', 4], ['Alt', 'AltRight'], ['←', 'ArrowLeft'],
       ['↓', 'ArrowDown'], ['→', 'ArrowRight'], ['Ctrl', 'ControlRight']];
-    this.keys = this.characters.map((char) => new Key(...char).createKey());
+    this.ukrainian = [['`', 'Backquote'], ['1', 'Digit1'], ['2', 'Digit2'], ['3', 'Digit3'], ['4', 'Digit4'], ['5', 'Digit5'],
+      ['6', 'Digit6'], ['7', 'Digit7'], ['8', 'Digit8'], ['9', 'Digit9'], ['0', 'Digit0'], ['-', 'Minus'], ['=', 'Equal'],
+      ['Backspace', 'Backspace', 3],
+      ['Tab', 'Tab', 2], ['й', 'KeyQ'], ['ц', 'KeyW'], ['у', 'KeyE'], ['к', 'KeyR'], ['е', 'KeyT'], ['н', 'KeyY'], ['г', 'KeyU'],
+      ['ш', 'KeyI'], ['щ', 'KeyO'], ['з', 'KeyP'], ['х', 'BracketLeft'], ['ї', 'BracketRight'], ['\\', 'Backslash'], ['Del', 'Delete'],
+      ['CapsLock', 'CapsLock', 3], ['ф', 'KeyA'], ['і', 'KeyS'], ['в', 'KeyD'], ['а', 'KeyF'], ['п', 'KeyG'], ['р', 'KeyH'], ['о', 'KeyJ'],
+      ['л', 'KeyK'], ['д', 'KeyL'], ['ж', 'Semicolon'], ['є', 'Quote'], ['Enter', 'Enter', 3],
+      ['Shift', 'ShiftLeft', 3], ['я', 'KeyZ'], ['ч', 'KeyX'], ['с', 'KeyC'], ['м', 'KeyV'], ['и', 'KeyB'], ['т', 'KeyN'], ['ь', 'KeyM'],
+      ['б', 'Comma'], ['ю', 'Period'], ['.', 'Slash'], ['↑', 'ArrowUp'], ['Shift', 'ShiftRight', 3],
+      ['Ctrl', 'ControlLeft', 3], ['Win', 'MetaLeft'], ['Alt', 'AltLeft'], [' ', 'Space', 4], ['Alt', 'AltRight'], ['←', 'ArrowLeft'],
+      ['↓', 'ArrowDown'], ['→', 'ArrowRight'], ['Ctrl', 'ControlRight']];
+    this.currentLanguage = language;
     this.area = area;
     this.functionCodes = ['Backspace', 'Delete', 'CapsLock', 'MetaLeft', 'AltLeft', 'AltRight', 'ControlLeft', 'ControlRight',
       'ShiftLeft', 'ShiftRight'];
+    this.pressed = new Set();
+  }
+
+  createKeys() {
+    if (this.currentLanguage === 'ua') {
+      this.keys = this.ukrainian.map((item) => new Key(...item).createKey());
+    } else {
+      this.keys = this.english.map((item) => new Key(...item).createKey());
+    }
   }
 
   createKeyboard() {
     const keyboard = document.createElement('div');
     keyboard.classList.add('keyboard');
+    this.createKeys();
     this.keys.forEach((key) => {
       keyboard.append(key);
     });
-
     return keyboard;
   }
 
@@ -37,8 +57,8 @@ export default class Keyboard {
     } else {
       key = this.keys.find((element) => element.dataset.code === event.code);
     }
-
     if (key && key.classList.contains('key')) {
+      this.pressed.add(key.dataset.code);
       if (this.functionCodes.includes(key.dataset.code)) {
         this.handleFunctionKey(key);
       } else {
@@ -60,6 +80,10 @@ export default class Keyboard {
       if (key.dataset.code === 'ShiftLeft' || key.dataset.code === 'ShiftRight') {
         this.unToggleShift();
       }
+      if ((this.pressed.has('AltLeft') && this.pressed.has('ControlLeft') && this.pressed.size === 2)) {
+        this.switchLanguage();
+      }
+      this.pressed.delete(key.dataset.code);
     }
   }
 
@@ -70,6 +94,7 @@ export default class Keyboard {
   }
 
   toggleCapsLock(key) {
+    this.pressed.delete(key.dataset.code);
     key.classList.toggle('pressed');
     this.keys.forEach((item) => {
       const element = item;
@@ -84,7 +109,11 @@ export default class Keyboard {
   }
 
   toggleShift(key) {
-    if (this.shiftToggled) return null;
+    this.pressed.delete(key.dataset.code);
+    const shifts = this.keys.filter((item) => item.dataset.code === 'ShiftLeft' || item.dataset.code === 'ShiftRight');
+    if (shifts.some((item) => item.classList.contains('pressed'))) {
+      return null;
+    }
     key.classList.add('pressed');
     this.keys.forEach((item) => {
       const element = item;
@@ -239,5 +268,38 @@ export default class Keyboard {
     this.area.value = this.area.value.slice(0, position)
     + this.area.value.slice(position + 1, this.area.value.length);
     this.area.setSelectionRange(position, position);
+  }
+
+  switchLanguage() {
+    let source = [];
+    if (this.currentLanguage === 'en') {
+      source = this.ukrainian;
+      this.currentLanguage = 'ua';
+    } else {
+      source = this.english;
+      this.currentLanguage = 'en';
+    }
+    localStorage.setItem('language', this.currentLanguage);
+    let shift = null;
+    let caps = null;
+    this.keys.forEach(((item, index) => {
+      const oldKey = item;
+      const newKey = new Key(...source[index]).createKey();
+      if ((oldKey.dataset.code === 'ShiftLeft' || oldKey.dataset.code === 'ShiftRight') && oldKey.classList.contains('pressed')) {
+        shift = newKey;
+      }
+      if (oldKey.dataset.code === 'CapsLock' && oldKey.classList.contains('pressed')) {
+        caps = newKey;
+      }
+      this.keys[this.keys.indexOf(oldKey)] = newKey;
+      oldKey.parentNode.replaceChild(newKey, oldKey);
+    }));
+
+    if (shift) {
+      this.toggleShift(shift);
+    }
+    if (caps) {
+      this.toggleCapsLock(caps);
+    }
   }
 }
